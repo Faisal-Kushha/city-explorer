@@ -36,3 +36,19 @@
     transform: rotate(360deg);
   }
 }
+
+.body header {
+  background-color: black;
+  color: white;
+}
+body {
+  background-color: rgb(230, 210, 169);
+}
+
+#one {
+  display: block;
+  margin: 10px;
+}
+#two {
+  left: 100px;
+}
