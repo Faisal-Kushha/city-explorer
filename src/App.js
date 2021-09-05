@@ -54,11 +54,13 @@ class App extends React.Component {
               Explore!
             </Button>
           </Form>
-          <div id="one">
-            <h3>Welcome to {this.state.displayName} </h3>
-            {this.state.displayName} is located at {this.state.lat} by{" "}
-            {this.state.lon}
-          </div>
+          {this.state.mapFlag && (
+            <div id="one">
+              <h3>Welcome to {this.state.displayName} </h3>
+              {this.state.displayName} is located at {this.state.lat} by{" "}
+              {this.state.lon}
+            </div>
+          )}
           <div id="two">
             {this.state.mapFlag && (
               <img
