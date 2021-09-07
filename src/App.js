@@ -8,6 +8,7 @@ import Button from "react-bootstrap/Button";
 import Error from "./components/Error";
 import "./App.css";
 import Weather from "./components/Weather";
+import Movies from "./components/Movie";
 
 class App extends React.Component {
   constructor(props) {
@@ -19,24 +20,27 @@ class App extends React.Component {
       mapFlag: false,
       displayError: false,
       weatherArr: [],
+      movieArr: [],
     };
   }
 
   getLocationData = async (event) => {
     event.preventDefault();
     const cityName = event.target.name.value;
-    const myKey = "pk.792bc93caec04cfa793de96fee0f7828";
+    const myKey = "pk.43fed3791d35ddb76aa14f749c6d3080";
     const URL1 = `https://city-explorer-api-week2.herokuapp.com/weather?name=${cityName}`;
     const URL2 = `https://eu1.locationiq.com/v1/search.php?key=${myKey}&q=${cityName}&format=json`;
+    const URL3 = `https://city-explorer-api-week2.herokuapp.com/movies?name=${cityName}`;
     try {
       let newLocation1 = await axios.get(URL1);
       let newLocation2 = await axios.get(URL2);
+      let newMovie = await axios.get(URL3);
       this.setState({
         lat: newLocation2.data[0].lat,
         lon: newLocation2.data[0].lon,
         name: cityName,
         weatherArr: newLocation1.data,
-
+        movieArr: newMovie.data,
         mapFlag: true,
       });
 
@@ -71,7 +75,7 @@ class App extends React.Component {
           <div id="two">
             {this.state.mapFlag && (
               <img
-                src={`https://maps.locationiq.com/v3/staticmap?key=pk.792bc93caec04cfa793de96fee0f7828&center=${this.state.lat},${this.state.lon}&zoom=1-18&format=png`}
+                src={`https://maps.locationiq.com/v3/staticmap?key=pk.43fed3791d35ddb76aa14f749c6d3080&center=${this.state.lat},${this.state.lon}&zoom=1-18&format=png`}
                 alt="map"
               />
             )}
@@ -83,6 +87,22 @@ class App extends React.Component {
                   <>
                     <p>Date: {item.date}</p>
                     <p>Description: {item.desc}</p>
+                  </>
+                );
+              })}
+            />
+          )}
+          {this.state.mapFlag && (
+            <Movies
+              movie={this.state.movieArr.map((item) => {
+                return (
+                  <>
+                    <p>Title: {item.title}</p>
+                    <p>Overview: {item.overview}</p>
+                    <p>Average_votes: {item.average_votes}</p>
+                    <p>Total_votes: {item.total_votes}</p>
+                    <p>Popularity: {item.popularity}</p>
+                    <p>Released_on: {item.released_on}</p>
                   </>
                 );
               })}
