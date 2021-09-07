@@ -18,29 +18,29 @@ class App extends React.Component {
       name: "",
       mapFlag: false,
       displayError: false,
-      day1: ["", ""],
-      day2: ["", ""],
-      day3: ["", ""],
+      weatherArr: [],
     };
   }
 
   getLocationData = async (event) => {
     event.preventDefault();
     const cityName = event.target.name.value;
-    // const myKey = "pk.5555b1da753853cd352a4bfe2f089b71";
-    const URL = `https://city-explorer-api-week2.herokuapp.com/weather?name=${cityName}`;
+    const myKey = "pk.792bc93caec04cfa793de96fee0f7828";
+    const URL1 = `https://city-explorer-api-week2.herokuapp.com/weather?name=${cityName}`;
+    const URL2 = `https://eu1.locationiq.com/v1/search.php?key=${myKey}&q=${cityName}&format=json`;
     try {
-      let newLocation = await axios.get(URL);
+      let newLocation1 = await axios.get(URL1);
+      let newLocation2 = await axios.get(URL2);
       this.setState({
-        lat: newLocation.data[0].lat,
-        lon: newLocation.data[0].lon,
-        name: newLocation.data[0].city,
-        day1: [newLocation.data[0].day1.time, newLocation.data[0].day1.weather],
-        day2: [newLocation.data[0].day2.time, newLocation.data[0].day2.weather],
-        day3: [newLocation.data[0].day3.time, newLocation.data[0].day3.weather],
+        lat: newLocation2.data[0].lat,
+        lon: newLocation2.data[0].lon,
+        name: cityName,
+        weatherArr: newLocation1.data,
 
         mapFlag: true,
       });
+
+      console.log(newLocation2.data);
     } catch {
       this.setState({
         displayError: true,
@@ -71,16 +71,21 @@ class App extends React.Component {
           <div id="two">
             {this.state.mapFlag && (
               <img
-                src={`https://maps.locationiq.com/v3/staticmap?key=pk.0e5854cc8c7816bc3a730130562eb3a1&center=${this.state.lat},${this.state.lon}&zoom=1-18&format=png`}
+                src={`https://maps.locationiq.com/v3/staticmap?key=pk.792bc93caec04cfa793de96fee0f7828&center=${this.state.lat},${this.state.lon}&zoom=1-18&format=png`}
                 alt="map"
               />
             )}
           </div>
           {this.state.mapFlag && (
             <Weather
-              day1={this.state.day1}
-              day2={this.state.day2}
-              day3={this.state.day3}
+              weather={this.state.weatherArr.map((item) => {
+                return (
+                  <>
+                    <p>Date: {item.date}</p>
+                    <p>Description: {item.desc}</p>
+                  </>
+                );
+              })}
             />
           )}
           <Error err={this.state.displayError} />
