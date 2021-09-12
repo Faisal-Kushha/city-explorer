@@ -9,6 +9,10 @@ import Error from "./components/Error";
 import "./App.css";
 import Weather from "./components/Weather";
 import Movies from "./components/Movie";
+import Card from "react-bootstrap/Card";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import ListGroup from "react-bootstrap/ListGroup";
 
 class App extends React.Component {
   constructor(props) {
@@ -80,33 +84,60 @@ class App extends React.Component {
               />
             )}
           </div>
+
           {this.state.mapFlag && (
-            <Weather
-              weather={this.state.weatherArr.map((item) => {
-                return (
-                  <>
-                    <p>Date: {item.date}</p>
-                    <p>Description: {item.desc}</p>
-                  </>
-                );
-              })}
-            />
+            <Row xs={1} md={3} className="g-4">
+              <Weather
+                weather={this.state.weatherArr.map((item) => {
+                  return (
+                    <>
+                      <Col>
+                        <Card style={{ width: "18rem" }}>
+                          <ListGroup variant="flush">
+                            <ListGroup.Item>Date: {item.date}</ListGroup.Item>
+                            <ListGroup.Item>
+                              Description: {item.desc}
+                            </ListGroup.Item>
+                          </ListGroup>
+                        </Card>
+                      </Col>
+                    </>
+                  );
+                })}
+              />
+            </Row>
           )}
           {this.state.mapFlag && (
-            <Movies
-              movie={this.state.movieArr.map((item) => {
-                return (
-                  <>
-                    <p>Title: {item.title}</p>
-                    <p>Overview: {item.overview}</p>
-                    <p>Average_votes: {item.average_votes}</p>
-                    <p>Total_votes: {item.total_votes}</p>
-                    <p>Popularity: {item.popularity}</p>
-                    <p>Released_on: {item.released_on}</p>
-                  </>
-                );
-              })}
-            />
+            <Row xs={1} md={3} className="g-4">
+              <Movies
+                movie={this.state.movieArr.map((item) => {
+                  return (
+                    <>
+                      <Col>
+                        <Card>
+                          <Card.Img variant="top" src={item.image_url} />
+                          <Card.Body>
+                            <Card.Title>Title: {item.title}</Card.Title>
+                            <Card.Text>
+                              Overview: {item.overview}
+                              <br />
+                              <br />
+                              Average_votes: {item.average_votes}
+                              <br />
+                              Total_votes: {item.total_votes}
+                              <br />
+                              Popularity: {item.popularity}
+                              <br />
+                              Released_on: {item.released_on}
+                            </Card.Text>
+                          </Card.Body>
+                        </Card>
+                      </Col>
+                    </>
+                  );
+                })}
+              />
+            </Row>
           )}
           <Error err={this.state.displayError} />
 
